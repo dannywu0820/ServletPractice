@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class HelloWorld
  */
-@WebServlet("/HelloWorld")
+@WebServlet(name = "HelloWorld", urlPatterns = {"/haha/helloworld"}, loadOnStartup=1)
 public class HelloWorld extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
