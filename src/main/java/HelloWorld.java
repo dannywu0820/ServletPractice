@@ -56,6 +56,8 @@ public class HelloWorld extends HttpServlet {
 		out.println("<p>" + request.getContextPath() + "</p>");
 		out.println("<p>" + request.getServletPath() + "</p>");
 		out.println("<p>" + request.getPathInfo() + "</p>");
+		getServletContext().getResourcePaths("/").forEach(ele -> out.println("<p>" + ele + "</p>"));
+		getServletContext().getResourcePaths("/WEB-INF/").forEach(System.out::println); // Show in console
 		
 		out.println("</body>");
 		out.println("</html>");
