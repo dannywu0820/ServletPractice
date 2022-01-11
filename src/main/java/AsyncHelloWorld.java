@@ -2,6 +2,7 @@
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import javax.servlet.AsyncContext;
@@ -20,7 +21,13 @@ import javax.servlet.http.HttpServletResponse;
 )
 public class AsyncHelloWorld extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+    private List<AsyncContext> asyncs;
+    
+    @Override
+    public void init() throws ServletException {
+    	asyncs = (List<AsyncContext>) this.getServletContext().getAttribute("asyncs");
+    }
+    
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -54,8 +61,9 @@ public class AsyncHelloWorld extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		synchronized(asyncs) {
+			asyncs.add(request.startAsync());
+		}
 	}
 	
 	private CompletableFuture<String> doAsync(AsyncContext context) {
