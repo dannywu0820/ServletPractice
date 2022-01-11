@@ -1,6 +1,8 @@
 package servlet.filter;
 
 import java.io.IOException;
+
+import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -14,7 +16,12 @@ import javax.servlet.http.HttpFilter;
 /**
  * Servlet Filter implementation class PerformanceFilter
  */
-@WebFilter(servletNames= {"HelloWorld"})
+@WebFilter(
+	urlPatterns = {"/other"},
+	dispatcherTypes = {
+		DispatcherType.INCLUDE
+	}
+)
 public class PerformanceFilter extends HttpFilter implements Filter {
        
     /**
