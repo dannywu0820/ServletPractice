@@ -30,7 +30,6 @@ public class HelloWorld extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		
 		response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("UTF-8");
 		
@@ -58,6 +57,7 @@ public class HelloWorld extends HttpServlet {
 		out.println("<p>" + request.getPathInfo() + "</p>");
 		getServletContext().getResourcePaths("/").forEach(ele -> out.println("<p>" + ele + "</p>"));
 		getServletContext().getResourcePaths("/WEB-INF/").forEach(System.out::println); // Show in console
+		System.out.println(request.getParameter("name"));
 		
 		out.println("</body>");
 		out.println("</html>");
