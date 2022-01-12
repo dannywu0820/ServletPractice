@@ -27,7 +27,8 @@ import servlet.request.wrapper.CharacterRequestWrapper;
 	urlPatterns = {"/*"},
 	initParams = {
 		@WebInitParam(name = "ESCAPE_LIST", value= "/WEB-INF/escapes.txt")
-	}
+	},
+	asyncSupported=true
 )
 public class CharacterFilter extends HttpFilter implements Filter {
 	private Map<String, String> escapes = new HashMap<>();
