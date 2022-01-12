@@ -10,6 +10,20 @@
     <welcome-file>default.htm</welcome-file>
   </welcome-file-list>
   
+  <login-config>
+  	<auth-method>BASIC</auth-method>
+  </login-config>
+  
+  <security-constraint>
+  	<web-resource-collection>
+  		<web-resource-name>Test</web-resource-name>
+  		<url-pattern>/haha/*</url-pattern>
+  		<http-method-omission>GET</http-method-omission>
+  		<http-method-omission>POST</http-method-omission>
+ 	</web-resource-collection>
+ 	<auth-constraint/>
+  </security-constraint>
+  
   <servlet>
     <servlet-name>Another</servlet-name>
     <jsp-file>/Test.jsp</jsp-file>
