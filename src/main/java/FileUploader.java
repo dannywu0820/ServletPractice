@@ -4,7 +4,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
+import java.util.concurrent.CompletableFuture;
 
+import javax.servlet.AsyncContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +20,10 @@ import javax.servlet.http.Part;
  * Servlet implementation class FileUploader
  */
 @MultipartConfig
-@WebServlet("/upload")
+@WebServlet(
+	urlPatterns = {"/upload"},
+	asyncSupported = true
+)
 public class FileUploader extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -43,16 +49,33 @@ public class FileUploader extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println(this.getServletName());
 		
-		Part photo = request.getPart("photo");
+		AsyncContext context = request.startAsync();
+		Part photo = ((HttpServletRequest)context.getRequest()).getPart("photo");
 		String filename = photo.getSubmittedFileName();
 		
-		try(InputStream in = photo.getInputStream(); OutputStream out = new FileOutputStream("C:\\Users\\Danny_Wu.PFT\\Desktop\\" + filename)){
-			byte[] buffer = new byte[1024];
-			int length = -1;
-			while((length = in.read(buffer)) != -1) {
-				out.write(buffer, 0, length);
+		CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+			// still use blocking I/O here
+			try(InputStream in = photo.getInputStream(); OutputStream out = new FileOutputStream("C:\\Users\\Danny_Wu.PFT\\Desktop\\" + filename)){
+				byte[] buffer = new byte[1024];
+				int length = -1;
+				while((length = in.read(buffer)) != -1) {
+					out.write(buffer, 0, length);
+				}
 			}
-		}
+			catch(IOException e) {
+				throw new UncheckedIOException(e);
+			}
+		});
+		
+		future.thenRun(() -> {
+			try {
+				context.getResponse().getWriter().println("Upload Successfully");
+				context.complete();
+			}
+			catch(IOException e) {
+				throw new UncheckedIOException(e);
+			}
+		});
 	}
 
 }
