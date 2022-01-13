@@ -33,15 +33,17 @@ public class Some extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		PrintWriter out = response.getWriter();
-        out.println("Some do one...");
-        
-        RequestDispatcher dispatcher = request.getRequestDispatcher("other");
-        List<String> books = Stream.of(1,2,3).map(e -> "book" + e).collect(Collectors.toList());
-        request.setAttribute("books", books);
-        dispatcher.include(request, response);
-        
-        out.println("Some do two...");
+		if(request.authenticate(response)) {
+			PrintWriter out = response.getWriter();
+	        out.println("Some do one...");
+	        
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("other");
+	        List<String> books = Stream.of(1,2,3).map(e -> "book" + e).collect(Collectors.toList());
+	        request.setAttribute("books", books);
+	        dispatcher.include(request, response);
+	        
+	        out.println("Some do two...");
+		}
 	}
 
 	/**
