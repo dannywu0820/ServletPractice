@@ -8,10 +8,15 @@
     <welcome-file>default.html</welcome-file>
     <welcome-file>default.jsp</welcome-file>
     <welcome-file>default.htm</welcome-file>
+    <welcome-file>login.html</welcome-file>
   </welcome-file-list>
   
   <login-config>
-  	<auth-method>BASIC</auth-method>
+  	<auth-method>FORM</auth-method>
+  	<form-login-config>
+  		<form-login-page>/login.html</form-login-page>
+  		<form-error-page>/error.html</form-error-page>
+  	</form-login-config>
   </login-config>
   
   <security-constraint>
