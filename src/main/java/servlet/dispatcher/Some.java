@@ -34,6 +34,8 @@ public class Some extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(request.authenticate(response)) {
+			response.setContentType("text/html; charset=utf-8");
+			
 			PrintWriter out = response.getWriter();
 	        out.println("Some do one...");
 	        
@@ -43,6 +45,7 @@ public class Some extends HttpServlet {
 	        dispatcher.include(request, response);
 	        
 	        out.println("Some do two...");
+	        out.println("<a href='logout'>µn¥X</a>");
 		}
 	}
 
